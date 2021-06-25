@@ -1,0 +1,38 @@
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=llvm-xtensa-git
+pkgver=r360705.65ed48e
+pkgrel=1
+pkgdesc="LLVM fork for ESP Xtensa"
+arch=('x86_64')
+url="https://github.com/espressif/llvm-project"
+license=('GPL')
+depends=('python' 'libxml2')
+makedepends=('git' 'cmake' 'ninja')
+provides=('llvm-xtensa')
+source=(
+  'git+https://github.com/espressif/llvm-project#commit=65ed48e8188320bf08d6ee7d7d3c19cf8b785406'
+)
+sha256sums=('SKIP')
+
+build() {
+  cd ${srcdir}/llvm-project/llvm
+  mkdir -p build
+  cd build
+  cmake .. -DLLVM_INSTALL_UTILS=On -DLLVM_INCLUDE_BENCHMARKS=Off -DLLVM_INCLUDE_EXAMPLES=Off -DLLVM_INCLUDE_GO_TESTS=Off -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="Xtensa" -DCMAKE_BUILD_TYPE=Release -G "Ninja"
+  cmake --build .
+}
+
+package() {
+  cd ${srcdir}/llvm-project/llvm/build
+  cmake --install . --prefix ${pkgdir}/opt/llvm-xtensa
+}
+
+#check() {
+#        cd "$pkgname-$pkgver"
+#        make -k check
+#}
+#
+#package() {
+#        cd "$pkgname-$pkgver"
+#        make DESTDIR="$pkgdir/" install
+#}

@@ -1,0 +1,40 @@
+# Maintainer: Your Name <youremail@domain.com>
+
+pkgname=rust-xtensa-git
+pkgver=r137847.65ed48e
+pkgrel=1
+pkgdesc="Rust for ESP Xtensa"
+arch=('x86_64')
+url="https://github.com/MabezDev/rust-xtensa"
+license=('GPL')
+makedepends=('git' 'cmake' 'ninja' 'llvm-xtensa')
+provides=('rust-xtensa')
+source=(
+  'git+https://github.com/MabezDev/rust-xtensa#commit=c4c02e8375fccb31e5d0e0e1bf283e40413fe59b'
+)
+sha256sums=('SKIP')
+
+prepare() {
+  cd ${srcdir}/rust-xtensa
+}
+
+build() {
+  cd ${srcdir}/rust-xtensa
+  ./configure --experimental-targets=Xtensa --llvm-root=/opt/llvm-xtensa --prefix="${pkgdir}/opt/rust-xtensa" --enable-optimize --enable-extended
+  python x.py build
+}
+
+package() {
+  cd ${srcdir}/rust-xtensa
+  python x.py install --keep-stage 0 --keep-stage 1 --keep-stage 2 --keep-stage-std 0 --keep-stage-std 1 --keep-stage-std 2 --stage 2
+}
+
+#check() {
+#        cd "$pkgname-$pkgver"
+#        make -k check
+#}
+#
+#package() {
+#        cd "$pkgname-$pkgver"
+#        make DESTDIR="$pkgdir/" install
+#}
