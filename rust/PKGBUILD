@@ -20,21 +20,13 @@ prepare() {
 
 build() {
   cd ${srcdir}/rust-xtensa
-  ./configure --experimental-targets=Xtensa --llvm-root=/opt/llvm-xtensa --prefix="${pkgdir}/opt/rust-xtensa" --enable-optimize --enable-extended
-  python x.py build
+  ./configure --experimental-targets=Xtensa --llvm-root=/opt/llvm-xtensa --enable-optimize --enable-extended
+  DESTDIR="$PWD"/dest-rust python x.py install
 }
 
 package() {
   cd ${srcdir}/rust-xtensa
-  python x.py install --keep-stage 0 --keep-stage 1 --keep-stage 2 --keep-stage-std 0 --keep-stage-std 1 --keep-stage-std 2 --stage 2
-}
+  mkdir -p "$pkgdir"/opt/rust-xtensa
 
-#check() {
-#        cd "$pkgname-$pkgver"
-#        make -k check
-#}
-#
-#package() {
-#        cd "$pkgname-$pkgver"
-#        make DESTDIR="$pkgdir/" install
-#}
+  cp -a dest-rust/* "$pkgdir"/opt/rust-xtensa
+}

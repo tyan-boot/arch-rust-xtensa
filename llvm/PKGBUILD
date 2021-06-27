@@ -18,7 +18,19 @@ build() {
   cd ${srcdir}/llvm-project/llvm
   mkdir -p build
   cd build
-  cmake .. -DLLVM_INSTALL_UTILS=On -DLLVM_INCLUDE_BENCHMARKS=Off -DLLVM_INCLUDE_EXAMPLES=Off -DLLVM_INCLUDE_GO_TESTS=Off -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="Xtensa" -DCMAKE_BUILD_TYPE=Release -G "Ninja"
+  cmake .. -G "Ninja" \
+  -DLLVM_INSTALL_UTILS=On \
+  -DLLVM_INCLUDE_BENCHMARKS=Off \
+  -DLLVM_INCLUDE_EXAMPLES=Off \
+  -DLLVM_INCLUDE_GO_TESTS=Off \
+  -DLLVM_TARGETS_TO_BUILD="X86" \
+  -DLLVM_BUILD_LLVM_DYLIB=On \
+  -DLLVM_LINK_LLVM_DYLIB=On \
+  -DLLVM_ENABLE_RTTI=On \
+  -DLLVM_ENABLE_FFI=On \
+  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="Xtensa" \
+  -DCMAKE_BUILD_TYPE=Release
+
   cmake --build .
 }
 
@@ -26,13 +38,3 @@ package() {
   cd ${srcdir}/llvm-project/llvm/build
   cmake --install . --prefix ${pkgdir}/opt/llvm-xtensa
 }
-
-#check() {
-#        cd "$pkgname-$pkgver"
-#        make -k check
-#}
-#
-#package() {
-#        cd "$pkgname-$pkgver"
-#        make DESTDIR="$pkgdir/" install
-#}
