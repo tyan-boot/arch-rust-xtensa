@@ -1,4 +1,4 @@
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: Tyan Boot <tyan-boot@outlook.com>
 
 pkgname=rust-xtensa-git
 pkgver=r142753.9b05fc7
@@ -7,7 +7,7 @@ pkgdesc="Rust for ESP Xtensa"
 arch=('x86_64')
 url="https://github.com/MabezDev/rust-xtensa"
 license=('GPL')
-makedepends=('git' 'cmake' 'ninja' 'llvm-xtensa')
+makedepends=('git' 'cmake' 'ninja')
 provides=('rust-xtensa')
 source=(
   'git+https://github.com/MabezDev/rust-xtensa#commit=9b05fc765f61af097eb53a23670830ba4c7fcea3'
