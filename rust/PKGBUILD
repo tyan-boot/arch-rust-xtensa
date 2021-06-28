@@ -1,7 +1,7 @@
 # Maintainer: Your Name <youremail@domain.com>
 
 pkgname=rust-xtensa-git
-pkgver=r137847.65ed48e
+pkgver=r142753.9b05fc7
 pkgrel=1
 pkgdesc="Rust for ESP Xtensa"
 arch=('x86_64')
@@ -10,7 +10,7 @@ license=('GPL')
 makedepends=('git' 'cmake' 'ninja' 'llvm-xtensa')
 provides=('rust-xtensa')
 source=(
-  'git+https://github.com/MabezDev/rust-xtensa#commit=c4c02e8375fccb31e5d0e0e1bf283e40413fe59b'
+  'git+https://github.com/MabezDev/rust-xtensa#commit=9b05fc765f61af097eb53a23670830ba4c7fcea3'
 )
 sha256sums=('SKIP')
 
@@ -20,13 +20,21 @@ prepare() {
 
 build() {
   cd ${srcdir}/rust-xtensa
-  ./configure --experimental-targets=Xtensa --llvm-root=/opt/llvm-xtensa --enable-optimize --enable-extended
-  DESTDIR="$PWD"/dest-rust python x.py install
+  ./configure \
+  --prefix=/opt/rust-xtensa \
+  --sysconfdir=/opt/rust-xtensa/etc \
+  --experimental-targets=Xtensa \
+  --enable-optimize \
+  --enable-extended \
+  --enable-profiler \
+  --enable-sanitizers \
+  --disable-docs \
+  --tools cargo,clippy,rustfmt,src
+
+  mkdir -p ${srcdir}/dest-rust
+  DESTDIR=${srcdir}/dest-rust python x.py install -i
 }
 
 package() {
-  cd ${srcdir}/rust-xtensa
-  mkdir -p "$pkgdir"/opt/rust-xtensa
-
-  cp -a dest-rust/* "$pkgdir"/opt/rust-xtensa
+  cp -a ${srcdir}/dest-rust/* "$pkgdir"
 }
