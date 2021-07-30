@@ -1,25 +1,21 @@
 # Maintainer: Tyan Boot <tyan-boot@outlook.com>
 
 pkgname=rust-xtensa-git
-pkgver=r142753.9b05fc7
+pkgver=r142760.1184ec0
 pkgrel=1
 pkgdesc="Rust for ESP Xtensa"
 arch=('x86_64')
-url="https://github.com/MabezDev/rust-xtensa"
+url="https://github.com/esp-rs/rust"
 license=('GPL')
 makedepends=('git' 'cmake' 'ninja')
 provides=('rust-xtensa')
 source=(
-  'git+https://github.com/MabezDev/rust-xtensa#commit=9b05fc765f61af097eb53a23670830ba4c7fcea3'
+  'git+https://github.com/esp-rs/rust#commit=1184ec00980dd25016e39da9687972cbaa0016c1'
 )
 sha256sums=('SKIP')
 
-prepare() {
-  cd ${srcdir}/rust-xtensa
-}
-
 build() {
-  cd ${srcdir}/rust-xtensa
+  cd ${srcdir}/rust
   ./configure \
   --prefix=/opt/rust-xtensa \
   --sysconfdir=/opt/rust-xtensa/etc \
