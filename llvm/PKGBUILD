@@ -1,4 +1,5 @@
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: Tyan Boot <tyan-boot@outlook.com>
+
 pkgname=llvm-xtensa-git
 pkgver=r360705.65ed48e
 pkgrel=1
@@ -37,4 +38,6 @@ build() {
 package() {
   cd ${srcdir}/llvm-project/llvm/build
   cmake --install . --prefix ${pkgdir}/opt/llvm-xtensa
+  mkdir -p ${pkgdir}/etc/ld.so.conf.d
+  echo /opt/llvm-xtensa/lib > ${pkgdir}/etc/ld.so.conf.d/llvm-xtensa.conf
 }
