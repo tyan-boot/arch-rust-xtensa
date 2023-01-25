@@ -1,7 +1,7 @@
 # Maintainer: Tyan Boot <tyan-boot@outlook.com>
 
 pkgname=llvm-xtensa-git
-pkgver=r360705.65ed48e
+pkgver=r431542.2378612
 pkgrel=1
 pkgdesc="LLVM fork for ESP Xtensa"
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('python' 'libxml2')
 makedepends=('git' 'cmake' 'ninja')
 provides=('llvm-xtensa')
 source=(
-  'git+https://github.com/espressif/llvm-project#commit=65ed48e8188320bf08d6ee7d7d3c19cf8b785406'
+  'git+https://github.com/espressif/llvm-project#commit=23786128aea96880a5752f6bd1c22aab27622ccf'
 )
 sha256sums=('SKIP')
 
