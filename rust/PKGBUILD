@@ -1,7 +1,7 @@
 # Maintainer: Tyan Boot <tyan-boot@outlook.com>
 
 pkgname=rust-xtensa-git
-pkgver=r208923.84ecb3f
+pkgver=r222065.ed3726b
 pkgrel=1
 pkgdesc="Rust for ESP Xtensa"
 arch=('x86_64')
@@ -10,24 +10,38 @@ license=('GPL')
 makedepends=('git' 'cmake' 'ninja' 'python')
 provides=('rust-xtensa')
 source=(
-  'git+https://github.com/esp-rs/rust#commit=84ecb3f010525cb1b2e7d4da306099c2eaa3e6cd'
+  'git+https://github.com/esp-rs/rust#commit=ed3726ba7aea45731260ec8f75f05fc60c2b0f22'
 )
 sha256sums=('SKIP')
 
+prepare() {
+  cd ${srcdir}/rust
+  cat > config.toml <<EOF
+changelog-seen = 2
+[llvm]
+download-ci-llvm = false
+experimental-targets = 'Xtensa'
+
+[build]
+docs = false
+extended = true
+tools = ['cargo', 'clippy', 'rustfmt', 'src']
+sanitizers = true
+profiler = true
+
+[install]
+prefix = '/opt/rust-xtensa'
+sysconfdir = '/opt/rust-xtensa/etc'
+
+[rust]
+channel = 'dev'
+EOF
+}
+
 build() {
   cd ${srcdir}/rust
-  ./configure \
-  --prefix=/opt/rust-xtensa \
-  --sysconfdir=/opt/rust-xtensa/etc \
-  --experimental-targets=Xtensa \
-  --enable-extended \
-  --enable-profiler \
-  --enable-sanitizers \
-  --disable-docs \
-  --tools cargo,clippy,rustfmt,src
-
   mkdir -p ${srcdir}/dest-rust
-  DESTDIR=${srcdir}/dest-rust python x.py install -i
+  DESTDIR=${srcdir}/dest-rust python x.py install
 }
 
 package() {
